@@ -14,7 +14,6 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private Tilemap _mainTilemap;
     [SerializeField] private Tilemap _tempTilemap;
     [SerializeField] private Camera _camera;
-    [SerializeField] private float _zPositionWhileBuilding = -3;
     [SerializeField] private string _highestLayerName;
     [SerializeField] private Color _gridBuildingColor;
     [SerializeField] private int _placedObjectsAmount;

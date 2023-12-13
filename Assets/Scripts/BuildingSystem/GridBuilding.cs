@@ -36,6 +36,8 @@ public class GridBuilding : MonoBehaviour
         PlaceGridBuildingParameters(gridBuildingID);
         GridBuildingSystem.Current.TakeArea(areaTemp);
         SelectablesManager.Current.CheckForSelectables();
+
+        _selectableObject.GetComponent<Selectable>().PlayPlacementSound();
     }
 
     #endregion

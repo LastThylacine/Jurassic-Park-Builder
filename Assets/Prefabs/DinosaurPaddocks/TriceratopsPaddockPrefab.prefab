@@ -4917,10 +4917,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8fd643e712bb346866eaa88883f342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Sounds:
+  - {fileID: 8300000, guid: a2227e8d27d54ec46ae93b7e7a9bcd5d, type: 3}
+  - {fileID: 8300000, guid: ca0f9e50335196a47b55c3518e4154f2, type: 3}
+  - {fileID: 8300000, guid: 84b8afe23fdc4eb4f93a1f182f850c28, type: 3}
   IsSelected: 0
   _selectedAnimator: {fileID: 6287785215526913169}
   _dinosaurAnimator: {fileID: 4241858978803487881}
-  _funSound: {fileID: 6325988673444539650}
   _evolutionsChanger: {fileID: 3566031748829286184}
   _dinosaurAnimationEventsListener: {fileID: 1331852711686860529}
 --- !u!114 &7111821246533221281
@@ -4993,7 +4996,6 @@ MonoBehaviour:
   _moneyCounter: {fileID: 4932891385141381409}
   _moneyCountDisplayer: {fileID: 2628096913801682760}
   _moneyManager: {fileID: 0}
-  _tapSound: {fileID: 7277151038618000095}
   _moneyPerSecond: 0.33
   _collectMoneyDisplay: {fileID: 0}
   _collectMoneyButton: {fileID: 0}
@@ -5040,9 +5042,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a2227e8d27d54ec46ae93b7e7a9bcd5d, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
   Mute: 0

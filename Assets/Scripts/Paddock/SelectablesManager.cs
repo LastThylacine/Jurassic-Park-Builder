@@ -18,6 +18,8 @@ public class SelectablesManager : MonoBehaviour
 
         CheckForSelectables();
 
+        UnselectAll();
+
         InitializeUI();
     }
 

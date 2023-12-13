@@ -10,7 +10,6 @@ public class MoneyObject : MonoBehaviour
     [SerializeField] private GameObject _moneyCounter;
     [SerializeField] private MoneyCountDisplayer _moneyCountDisplayer;
     [SerializeField] private MoneyManager _moneyManager;
-    [SerializeField] private AudioSource _tapSound;
     [SerializeField] private float _moneyPerSecond = 0.33f;
     [SerializeField] private CollectMoneyDisplay _collectMoneyDisplay;
     [SerializeField] private Button _collectMoneyButton;
@@ -115,9 +114,9 @@ public class MoneyObject : MonoBehaviour
     {
         if (_selectable.IsSelected && !GridBuildingSystem.Current.TempGridBuilding)
         {
-            if (_paddock)
+            if (_selectable)
             {
-                _paddock.Select();
+                _selectable.Select();
             }
 
             GetMoney();
@@ -135,7 +134,7 @@ public class MoneyObject : MonoBehaviour
             _moneyManager.AddMoney(CurrentMoneyInteger);
             _currentMoneyFloated = 0;
             CurrentMoneyInteger = 0;
-            _tapSound.Play();
+            _selectable.PlaySound(_selectable.Sounds[0]);
         }
     }
 }

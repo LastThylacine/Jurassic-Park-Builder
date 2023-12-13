@@ -6,7 +6,6 @@ public class Paddock : Selectable
 {
     [SerializeField] private Animator _selectedAnimator;
     [SerializeField] private Animator _dinosaurAnimator;
-    [SerializeField] private AudioSource _funSound;
     [SerializeField] private GameObject _evolutionsChanger;
     [SerializeField] private AnimationEventsListener _dinosaurAnimationEventsListener;
 
@@ -17,10 +16,8 @@ public class Paddock : Selectable
         _moneyObject = GetComponent<MoneyObject>();
     }
 
-    public override void Start()
+    private void Start()
     {
-        base.Start();
-
         _evolutionsChanger.SetActive(IsSelected);
     }
 
@@ -44,7 +41,7 @@ public class Paddock : Selectable
         {
             _dinosaurAnimator.SetTrigger("Fun");
 
-            _funSound.Play();
+            PlaySound(Sounds[2], 0.5f);
         }
     }
 

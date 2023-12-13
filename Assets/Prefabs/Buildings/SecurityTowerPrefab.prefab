@@ -199,6 +199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d2730a35fc26c947b8319f26c8afa01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Sounds:
+  - {fileID: 8300000, guid: 5766d537cc38fca4797866446978af2c, type: 3}
+  - {fileID: 8300000, guid: 63de90a5ea5149e4094c3bfbbe5a402a, type: 3}
   IsSelected: 0
   _selectedAnimator: {fileID: 1989726438926072640}
 --- !u!114 &3568875328770311534
@@ -218,7 +221,6 @@ MonoBehaviour:
   _moneyCounter: {fileID: 7396237107488564667}
   _moneyCountDisplayer: {fileID: 3576111352468428970}
   _moneyManager: {fileID: 0}
-  _tapSound: {fileID: 1357787211617081991}
   _moneyPerSecond: 0.33
   _collectMoneyDisplay: {fileID: 0}
   _collectMoneyButton: {fileID: 0}
@@ -250,9 +252,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5766d537cc38fca4797866446978af2c, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
   Mute: 0
