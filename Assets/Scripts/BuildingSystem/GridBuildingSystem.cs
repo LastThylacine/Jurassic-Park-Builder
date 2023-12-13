@@ -17,7 +17,7 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private string _highestLayerName;
     [SerializeField] private Color _gridBuildingColor;
     [SerializeField] private int _placedObjectsAmount;
-
+    
     private static Dictionary<TileType, TileBase> tileBases = new Dictionary<TileType, TileBase>();
 
     public GridBuilding TempGridBuilding { get; private set; }

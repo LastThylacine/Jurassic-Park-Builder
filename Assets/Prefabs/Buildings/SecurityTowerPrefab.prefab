@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 1357787211617081991}
   - component: {fileID: 4647589561746264560}
   - component: {fileID: 2357536708258815039}
+  - component: {fileID: 4191673498828045377}
   m_Layer: 0
   m_Name: SecurityTower
   m_TagString: Untagged
@@ -203,6 +204,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5766d537cc38fca4797866446978af2c, type: 3}
   - {fileID: 8300000, guid: 63de90a5ea5149e4094c3bfbbe5a402a, type: 3}
   IsSelected: 0
+  _objectsFadeInOut: {fileID: 4191673498828045377}
   _selectedAnimator: {fileID: 1989726438926072640}
 --- !u!114 &3568875328770311534
 MonoBehaviour:
@@ -362,6 +364,20 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!114 &4191673498828045377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738122557006344997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 488fd85f8d717f844be21fdb96aec1c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animatorControllers:
+  - {fileID: 1989726438926072640}
 --- !u!1 &2624158280460985708
 GameObject:
   m_ObjectHideFlags: 0

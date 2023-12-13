@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class Paddock : Selectable
 {
-    [SerializeField] private Animator _selectedAnimator;
     [SerializeField] private Animator _dinosaurAnimator;
     [SerializeField] private GameObject _evolutionsChanger;
     [SerializeField] private AnimationEventsListener _dinosaurAnimationEventsListener;
@@ -35,8 +34,6 @@ public class Paddock : Selectable
 
         _evolutionsChanger.SetActive(IsSelected);
 
-        _selectedAnimator.SetBool("FadeInOut", IsSelected);
-
         if (_dinosaurAnimationEventsListener.IsAnimationEnded && _moneyObject.CurrentMoneyInteger != 0)
         {
             _dinosaurAnimator.SetTrigger("Fun");
@@ -50,7 +47,5 @@ public class Paddock : Selectable
         base.Unselect();
 
         _evolutionsChanger.SetActive(IsSelected);
-
-        _selectedAnimator.SetBool("FadeInOut", IsSelected);
     }
 }
