@@ -56,7 +56,7 @@ public class SelectablesManager : MonoBehaviour
 
     public void InitializeUI()
     {
-        if (GridBuildingSystem.Current.TempGridBuilding || !_currentSelectable)
+        if (GridBuildingSystem.Current.TempPlaceableObject || !_currentSelectable)
             return;
 
         if (_isSomethingSelected)

@@ -9,7 +9,7 @@ public class Building : Selectable
 
     private void OnMouseUp()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && !GridBuildingSystem.Current.TempGridBuilding)
+        if (!EventSystem.current.IsPointerOverGameObject() && !GridBuildingSystem.Current.TempPlaceableObject)
         {
             Select();
         }

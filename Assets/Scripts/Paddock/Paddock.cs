@@ -22,7 +22,7 @@ public class Paddock : Selectable
 
     private void OnMouseUp()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && !GridBuildingSystem.Current.TempGridBuilding)
+        if (!PointerOverUIChecker.Current.IsPointerOverUIObject() && !GridBuildingSystem.Current.TempPlaceableObject)
         {
             Select();
         }

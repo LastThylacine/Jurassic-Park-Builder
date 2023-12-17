@@ -4,7 +4,7 @@ public class Selectable : SoundObject
 {
     public bool IsSelected;
 
-    [SerializeField] private ObjectsFadeInOut _objectsFadeInOut;
+    [SerializeField] private FadeInOut _objectsFadeInOut;
 
     public virtual void Select()
     {
@@ -12,7 +12,7 @@ public class Selectable : SoundObject
 
         IsSelected = true;
 
-        _objectsFadeInOut.FadeInOut(IsSelected);
+        _objectsFadeInOut.SetFade(IsSelected);
 
         SelectablesManager.Current.SetIsSomethingSelected(IsSelected);
     }
@@ -21,7 +21,7 @@ public class Selectable : SoundObject
     {
         IsSelected = false;
 
-        _objectsFadeInOut.FadeInOut(IsSelected);
+        _objectsFadeInOut.SetFade(IsSelected);
 
         SelectablesManager.Current.SetIsSomethingSelected(IsSelected);
     }

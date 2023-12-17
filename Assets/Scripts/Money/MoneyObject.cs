@@ -89,7 +89,7 @@ public class MoneyObject : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!PointerOverUIChecker.Current.IsPointerOverUIObject())
         {
             GetMoneyIfAvaliable();
         }
@@ -112,7 +112,7 @@ public class MoneyObject : MonoBehaviour
 
     private void GetMoneyIfAvaliableByButton()
     {
-        if (_selectable.IsSelected && !GridBuildingSystem.Current.TempGridBuilding)
+        if (_selectable.IsSelected && !GridBuildingSystem.Current.TempPlaceableObject)
         {
             if (_selectable)
             {
@@ -125,7 +125,7 @@ public class MoneyObject : MonoBehaviour
 
     private void GetMoney()
     {
-        if (CurrentMoneyInteger != 0 && !_moneyCounter.activeInHierarchy && !GridBuildingSystem.Current.TempGridBuilding)
+        if (CurrentMoneyInteger != 0 && !_moneyCounter.activeInHierarchy && !GridBuildingSystem.Current.TempPlaceableObject)
         {
             _notification.SetActive(false);
             _tapVFX.SetActive(true);
