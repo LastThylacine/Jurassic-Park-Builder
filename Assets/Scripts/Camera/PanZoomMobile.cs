@@ -7,21 +7,15 @@ public class PanZoomMobile : MonoBehaviour
     [SerializeField] private float _zoomMaximum;
 
     private Camera _camera;
+    private CameraWorldBounds _cameraWorldBounds;
 
     private bool _moveAllowed;
     private Vector3 _touchPosition;
 
-    private Bounds _cameraBounds;
-    private Vector3 _targetPosition;
-
     private void Awake()
     {
         _camera = GetComponent<Camera>();
-    }
-
-    private void Start()
-    {
-        RecalculateBounds();
+        _cameraWorldBounds = FindObjectOfType<CameraWorldBounds>();
     }
 
     private void Update()
@@ -51,6 +45,7 @@ public class PanZoomMobile : MonoBehaviour
 
                 Zoom(difference * 0.001f);
             }
+
             else
             {
                 Touch touch = Input.GetTouch(0);
@@ -81,47 +76,10 @@ public class PanZoomMobile : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
-    {
-        transform.position = new Vector3
-            (
-            Mathf.Clamp(transform.position.x, _cameraBounds.min.x, _cameraBounds.max.x),
-            Mathf.Clamp(transform.position.y, _cameraBounds.min.y, _cameraBounds.max.y),
-            transform.position.z
-            );
-    }
-
     private void Zoom(float increment)
     {
         _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - increment, _zoomMinimum, _zoomMaximum);
 
-        RecalculateBounds();
-    }
-
-    private void RecalculateBounds()
-    {
-        var height = _camera.orthographicSize;
-        var width = height * _camera.aspect;
-
-        var minX = Globals.WorldBounds.min.x + width;
-        var maxX = Globals.WorldBounds.extents.x - width;
-
-        var minY = Globals.WorldBounds.min.y + height;
-        var maxY = Globals.WorldBounds.extents.y - height;
-
-        _cameraBounds = new Bounds();
-        _cameraBounds.SetMinMax(
-            new Vector2(minX, minY),
-            new Vector2(maxX + Globals.WorldBounds.center.x, maxY + Globals.WorldBounds.center.y)
-        );
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(new Vector3
-            (((_cameraBounds.max.x - Mathf.Abs(_cameraBounds.min.x)) / 2f),
-            ((_cameraBounds.max.y - Mathf.Abs(_cameraBounds.min.y)) / 2f)),
-            new Vector3(_cameraBounds.max.x - _cameraBounds.min.x, _cameraBounds.max.y - _cameraBounds.min.y));
+        _cameraWorldBounds.RecalculateBounds();
     }
 }
