@@ -12,6 +12,18 @@ public class PlaceableObject : MonoBehaviour
     [SerializeField] private GameObject _display;
     [SerializeField] private GameObject _paddock;
 
+    public GameObject Display
+    {
+        get
+        {
+            return _display;
+        }
+        set
+        {
+            _display = value;
+        }
+    }
+
     #region Unity Methods
 
     private void Awake()
@@ -49,6 +61,8 @@ public class PlaceableObject : MonoBehaviour
         SelectablesManager.Current.CheckForSelectables();
 
         _paddock.GetComponent<Selectable>().PlayPlacementSound();
+
+        CameraObjectFollowing.Current.SetTarget(null);
     }
 
     #endregion

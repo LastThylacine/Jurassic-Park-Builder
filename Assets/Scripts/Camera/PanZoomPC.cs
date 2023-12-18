@@ -14,6 +14,7 @@ public class PanZoomPC : MonoBehaviour
 
     private Camera _camera;
     private CameraWorldBounds _cameraWorldBounds;
+    private CameraObjectFollowing _cameraObjectFollowing;
     private Controls _controls;
     private Vector2 _startPoint;
     private Vector2 _startCameraPosition;
@@ -32,6 +33,7 @@ public class PanZoomPC : MonoBehaviour
     private void Start()
     {
         _zoomDelta = (_maxZoom - _minZoom) / 2f;
+        _cameraObjectFollowing = FindObjectOfType<CameraObjectFollowing>();
     }
 
     private void OnZoom(InputAction.CallbackContext context)
@@ -57,6 +59,9 @@ public class PanZoomPC : MonoBehaviour
 
     private void Update()
     {
+        if (_cameraObjectFollowing.Target)
+            return;
+
         if (_startPoint == Vector2.zero) return;
 
         Vector2 point = _camera.ScreenToViewportPoint(Input.mousePosition);

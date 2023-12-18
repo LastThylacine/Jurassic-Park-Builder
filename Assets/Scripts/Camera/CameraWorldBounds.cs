@@ -15,7 +15,7 @@ public class CameraWorldBounds : MonoBehaviour
 
     private void Awake()
     {
-        var bounds = GetComponent<Collider2D>().bounds;
+        var bounds = GetComponent<SpriteRenderer>().bounds;
         Globals.WorldBounds = bounds;
 
         _camera = FindObjectOfType<Camera>();

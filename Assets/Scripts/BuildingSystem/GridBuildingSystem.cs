@@ -50,54 +50,8 @@ public class GridBuildingSystem : MonoBehaviour
         if (!TempPlaceableObject)
             return;
 
-        _tempTilemap.gameObject.SetActive(TempPlaceableObject);
-        _mainTilemap.gameObject.SetActive(TempPlaceableObject);
-
         if (TempPlaceableObject.DisplayFadeInOut != null)
             TempPlaceableObject.DisplayFadeInOut.SetFade(TempPlaceableObject && TempPlaceableObject.CanBePlaced());
-
-        //if (!TempGridBuilding)
-        //{
-        //    return;
-        //}
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //if (EventSystem.current.IsPointerOverGameObject())
-        //{
-        //    return;
-        //}
-
-        //if (!TempGridBuilding.Placed)
-        //{
-        //Vector2 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Vector3Int cellPosition = GridLayout.LocalToCell(touchPosition);
-
-        //if (_prevPosition != cellPosition)
-        //{
-        //    TempGridBuilding.transform.localPosition = GridLayout.CellToLocalInterpolated(cellPosition
-        //        + new Vector3(0.5f, 0.5f, 0f));
-        //    _prevPosition = cellPosition;
-        //    FollowBuilding();
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    if (TempGridBuilding.CanBePlaced())
-        //    {
-        //        TempGridBuilding.Place();
-        //        TempGridBuilding = null;
-        //        ReloadUI();
-        //    }
-        //}
-        //else if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    ClearArea();
-        //    Destroy(TempGridBuilding.gameObject);
-        //    ReloadUI();
-        //}
-        //}
-        //}
     }
 
     #endregion
@@ -151,6 +105,10 @@ public class GridBuildingSystem : MonoBehaviour
         TempPlaceableObject.transform.localPosition = GridLayout.CellToLocalInterpolated(new Vector3(cellPosition.x, cellPosition.y, 0f));
         _prevPosition = cellPosition;
         FollowBuilding();
+
+        CameraObjectFollowing.Current.SetTarget(TempPlaceableObject.transform);
+
+        _tempTilemap.gameObject.SetActive(true);
     }
 
     private void ClearArea()
@@ -293,6 +251,7 @@ public class GridBuildingSystem : MonoBehaviour
             Destroy(TempPlaceableObject.gameObject);
             TempPlaceableObject = null;
             ReloadUI();
+            _tempTilemap.gameObject.SetActive(false);
         }
     }
 
@@ -309,6 +268,7 @@ public class GridBuildingSystem : MonoBehaviour
                 TempPlaceableObject.Place(_placedObjectsAmount);
                 TempPlaceableObject = null;
                 ReloadUI();
+                _tempTilemap.gameObject.SetActive(false);
             }
         }
     }

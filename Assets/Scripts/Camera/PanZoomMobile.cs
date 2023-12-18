@@ -8,6 +8,7 @@ public class PanZoomMobile : MonoBehaviour
 
     private Camera _camera;
     private CameraWorldBounds _cameraWorldBounds;
+    private CameraObjectFollowing _cameraObjectFollowing;
 
     private bool _moveAllowed;
     private Vector3 _touchPosition;
@@ -16,10 +17,14 @@ public class PanZoomMobile : MonoBehaviour
     {
         _camera = GetComponent<Camera>();
         _cameraWorldBounds = FindObjectOfType<CameraWorldBounds>();
+        _cameraObjectFollowing = FindObjectOfType<CameraObjectFollowing>();
     }
 
     private void Update()
     {
+        if (_cameraObjectFollowing.Target)
+            return;
+
         if (Input.touchCount > 0)
         {
             if (Input.touchCount == 2)
