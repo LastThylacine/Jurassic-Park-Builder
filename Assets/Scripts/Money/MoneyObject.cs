@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MoneyObject : MonoBehaviour
@@ -24,6 +23,8 @@ public class MoneyObject : MonoBehaviour
     private int _currentSecond;
     private float _currentMoneyFloated;
     private float _timeFromLastMoneyAdding;
+    private bool _isPointerMoving;
+    private Vector3 _lastPointerPosition;
 
     private void Start()
     {
@@ -87,11 +88,30 @@ public class MoneyObject : MonoBehaviour
         }
     }
 
+    private void OnMouseDown()
+    {
+        _lastPointerPosition = Input.mousePosition;
+    }
+
     private void OnMouseUp()
     {
-        if (!PointerOverUIChecker.Current.IsPointerOverUIObject())
+        if (!PointerOverUIChecker.Current.IsPointerOverUIObject() && !_isPointerMoving)
         {
             GetMoneyIfAvaliable();
+        }
+    }
+
+    private void OnMouseDrag()
+    {
+        Vector3 delta = Input.mousePosition - _lastPointerPosition;
+
+        if (delta.magnitude > 15f)
+        {
+            _isPointerMoving = true;
+        }
+        else
+        {
+            _isPointerMoving = false;
         }
     }
 
@@ -100,19 +120,29 @@ public class MoneyObject : MonoBehaviour
         _moneyPerSecond = MaximumMoney / _maximumSeconds;
     }
 
-    private void InitializeData()
-    {
-
-    }
-
     private void GetMoneyIfAvaliable()
     {
-        GetMoney();
+        if (!_moneyCounter.activeInHierarchy && !GridBuildingSystem.Current.TempPlaceableObject)
+        {
+            if (_selectable)
+            {
+                _selectable.Select();
+            }
+
+            GetMoney();
+        }
+        else
+        {
+            if (_selectable)
+            {
+                _selectable.Select();
+            }
+        }
     }
 
     private void GetMoneyIfAvaliableByButton()
     {
-        if (_selectable.IsSelected && !GridBuildingSystem.Current.TempPlaceableObject)
+        if (CurrentMoneyInteger != 0 && _selectable.IsSelected && !GridBuildingSystem.Current.TempPlaceableObject)
         {
             if (_selectable)
             {
@@ -125,16 +155,13 @@ public class MoneyObject : MonoBehaviour
 
     private void GetMoney()
     {
-        if (CurrentMoneyInteger != 0 && !_moneyCounter.activeInHierarchy && !GridBuildingSystem.Current.TempPlaceableObject)
-        {
-            _notification.SetActive(false);
-            _tapVFX.SetActive(true);
-            _moneyCounter.SetActive(true);
-            _moneyCountDisplayer.DisplayCount(CurrentMoneyInteger);
-            _moneyManager.AddMoney(CurrentMoneyInteger);
-            _currentMoneyFloated = 0;
-            CurrentMoneyInteger = 0;
-            _selectable.PlaySound(_selectable.Sounds[0]);
-        }
+        _notification.SetActive(false);
+        _tapVFX.SetActive(true);
+        _moneyCounter.SetActive(true);
+        _moneyCountDisplayer.DisplayCount(CurrentMoneyInteger);
+        _moneyManager.AddMoney(CurrentMoneyInteger);
+        _currentMoneyFloated = 0;
+        CurrentMoneyInteger = 0;
+        _selectable.PlaySound(_selectable.Sounds[0]);
     }
 }

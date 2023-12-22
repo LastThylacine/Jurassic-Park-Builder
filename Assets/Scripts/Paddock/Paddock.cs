@@ -20,14 +20,6 @@ public class Paddock : Selectable
         _evolutionsChanger.SetActive(IsSelected);
     }
 
-    private void OnMouseUp()
-    {
-        if (!PointerOverUIChecker.Current.IsPointerOverUIObject() && !GridBuildingSystem.Current.TempPlaceableObject)
-        {
-            Select();
-        }
-    }
-
     public override void Select()
     {
         base.Select();

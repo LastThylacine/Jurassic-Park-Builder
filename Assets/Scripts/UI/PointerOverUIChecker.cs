@@ -7,13 +7,6 @@ public class PointerOverUIChecker : MonoBehaviour
 {
     public static PointerOverUIChecker Current;
 
-    public static PanZoomMobile _panZoomMobile;
-
-    private void Awake()
-    {
-        _panZoomMobile = FindObjectOfType<PanZoomMobile>();
-    }
-
     private void Start()
     {
         Current = this;
