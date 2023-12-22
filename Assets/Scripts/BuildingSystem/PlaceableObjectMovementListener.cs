@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlaceableObjectMovementListener : MonoBehaviour
 {
+    public bool IsMoving;
+
     private PlaceableObject _placeableObject;
 
     private void Start()
@@ -30,5 +32,16 @@ public class PlaceableObjectMovementListener : MonoBehaviour
         }
 
         GridBuildingSystem.Current.MoveGridBuildingWithOffset();
+        IsMoving = true;
+    }
+
+    private void OnMouseUp()
+    {
+        if (GridBuildingSystem.Current.TempPlaceableObject != _placeableObject)
+        {
+            return;
+        }
+
+        IsMoving = false;
     }
 }

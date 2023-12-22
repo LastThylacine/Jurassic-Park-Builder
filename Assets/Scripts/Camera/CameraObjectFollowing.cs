@@ -9,8 +9,7 @@ public class CameraObjectFollowing : MonoBehaviour
     private Camera _camera;
     private Bounds _targetBounds;
     private Vector3 _previousPosition;
-
-    private Vector3 _velocity = Vector3.zero;
+    private PlaceableObjectMovementListener _placeableObjectMovementListener;
 
     private void Awake() => _camera = FindObjectOfType<Camera>();
 
@@ -18,16 +17,17 @@ public class CameraObjectFollowing : MonoBehaviour
 
     private void Update()
     {
-        if (Target)
+        if (Target && _placeableObjectMovementListener.IsMoving)
         {
-            Vector2 targetPosition = _camera.WorldToViewportPoint(Target.position + _targetBounds.extents);
+            Vector2 mousePosition = Input.mousePosition;
 
-            if (targetPosition.x >= 0.7f || targetPosition.x <= 0.3f || targetPosition.y >= 0.7f || targetPosition.y <= 0.3f)
+            if (mousePosition.x > 0.75f * Screen.width || mousePosition.x < 0.25f * Screen.width
+                || mousePosition.y > 0.75f * Screen.height || mousePosition.y < 0.25f * Screen.height)
             {
                 Vector3 position = _camera.ScreenToWorldPoint(Target.position);
                 Vector3 direction = position - _previousPosition;
 
-                _camera.transform.position += direction;
+                _camera.transform.position += direction.normalized * 0.0025f;
 
                 _previousPosition = position;
             }
@@ -47,6 +47,7 @@ public class CameraObjectFollowing : MonoBehaviour
         {
             _targetBounds = Target.GetComponent<PlaceableObject>().Display.GetComponent<PolygonCollider2D>().bounds;
             _previousPosition = target.position;
+            _placeableObjectMovementListener = Target.GetComponentInChildren<PlaceableObjectMovementListener>();
         }
     }
 }
