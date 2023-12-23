@@ -7,19 +7,20 @@ public class GridBuildingSystem : MonoBehaviour
     public static GridBuildingSystem Current;
 
     public GridLayout GridLayout;
+    public int PlacedObjectsAmount;
 
     [SerializeField] private GameObject[] _buildingUI;
     [SerializeField] private GameObject[] _notBuildingUI;
     [SerializeField] private GameObject[] _defaultUI;
-    [SerializeField] private Tilemap _mainTilemap;
-    [SerializeField] private Tilemap _tempTilemap;
     [SerializeField] private Camera _camera;
     [SerializeField] private string _highestLayerName;
-    [SerializeField] private int _placedObjectsAmount;
+
+    public Tilemap MainTilemap;
+    public Tilemap TempTilemap;
 
     private static Dictionary<TileType, TileBase> tileBases = new Dictionary<TileType, TileBase>();
 
-    public PlaceableObject TempPlaceableObject { get; private set; }
+    [HideInInspector] public PlaceableObject TempPlaceableObject;
 
     private Vector3 _startTouchPosition;
     private float _deltaX, _deltaY;
@@ -89,6 +90,11 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
+    public void SetAreaWhite(BoundsInt area, Tilemap tilemap)
+    {
+        SetTilesBlock(area, TileType.White, tilemap);
+    }
+
     #endregion
 
     #region Building Placement
@@ -96,7 +102,7 @@ public class GridBuildingSystem : MonoBehaviour
     public void InitializeWithBuilding(GameObject building)
     {
         TempPlaceableObject = Instantiate(building, Vector3.zero, Quaternion.identity).GetComponent<PlaceableObject>();
-        TempPlaceableObject.InitializeGridBuilding();
+        TempPlaceableObject.InitializeDisplayObjects(true);
         ReloadUI();
 
         Vector3 screenMiddlePoint = _camera.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2));
@@ -107,25 +113,24 @@ public class GridBuildingSystem : MonoBehaviour
         FollowBuilding();
 
         CameraObjectFollowing.Current.SetTarget(TempPlaceableObject.transform);
-
-        _tempTilemap.gameObject.SetActive(true);
+        TempTilemap.gameObject.SetActive(true);
     }
 
     private void ClearArea()
     {
         TileBase[] toClear = new TileBase[_prevArea.size.x * _prevArea.size.y * _prevArea.size.z];
         FillTiles(toClear, TileType.Empty);
-        _tempTilemap.SetTilesBlock(_prevArea, toClear);
+        TempTilemap.SetTilesBlock(_prevArea, toClear);
     }
 
-    private void FollowBuilding()
+    public void FollowBuilding()
     {
         ClearArea();
 
         TempPlaceableObject.Area.position = GridLayout.WorldToCell(TempPlaceableObject.gameObject.transform.position);
         BoundsInt buildingArea = TempPlaceableObject.Area;
 
-        TileBase[] baseArray = GetTilesBlock(buildingArea, _mainTilemap);
+        TileBase[] baseArray = GetTilesBlock(buildingArea, MainTilemap);
 
         int size = baseArray.Length;
         TileBase[] tileArray = new TileBase[size];
@@ -143,13 +148,13 @@ public class GridBuildingSystem : MonoBehaviour
             }
         }
 
-        _tempTilemap.SetTilesBlock(buildingArea, tileArray);
+        TempTilemap.SetTilesBlock(buildingArea, tileArray);
         _prevArea = buildingArea;
     }
 
     public bool CanTakeArea(BoundsInt area)
     {
-        TileBase[] baseArray = GetTilesBlock(area, _mainTilemap);
+        TileBase[] baseArray = GetTilesBlock(area, MainTilemap);
         foreach (var tileBase in baseArray)
         {
             if (tileBase != tileBases[TileType.White])
@@ -164,8 +169,13 @@ public class GridBuildingSystem : MonoBehaviour
 
     public void TakeArea(BoundsInt area)
     {
-        SetTilesBlock(area, TileType.Empty, _tempTilemap);
-        SetTilesBlock(area, TileType.Green, _mainTilemap);
+        SetTilesBlock(area, TileType.Empty, TempTilemap);
+        SetTilesBlock(area, TileType.Green, MainTilemap);
+    }
+
+    public void IncreacePlacedObjectsAmount()
+    {
+        PlacedObjectsAmount++;
     }
 
     #endregion
@@ -196,7 +206,7 @@ public class GridBuildingSystem : MonoBehaviour
 
         if (_prevPosition != cellPosition)
         {
-            TempPlaceableObject.transform.localPosition = GridLayout.CellToLocalInterpolated(cellPosition);
+            TempPlaceableObject.transform.position = GridLayout.CellToLocalInterpolated(cellPosition);
             _prevPosition = cellPosition;
             FollowBuilding();
         }
@@ -206,7 +216,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     #region Interface
 
-    private void ReloadUI()
+    public void ReloadUI()
     {
         if (TempPlaceableObject)
         {
@@ -251,7 +261,15 @@ public class GridBuildingSystem : MonoBehaviour
             Destroy(TempPlaceableObject.gameObject);
             TempPlaceableObject = null;
             ReloadUI();
-            _tempTilemap.gameObject.SetActive(false);
+            TempTilemap.gameObject.SetActive(false);
+        }
+        else
+        {
+            TempPlaceableObject.CancelEditing();
+            ClearArea();
+            TempPlaceableObject = null;
+            ReloadUI();
+            TempTilemap.gameObject.SetActive(false);
         }
     }
 
@@ -264,12 +282,19 @@ public class GridBuildingSystem : MonoBehaviour
         {
             if (TempPlaceableObject.CanBePlaced())
             {
-                _placedObjectsAmount++;
-                TempPlaceableObject.Place(_placedObjectsAmount);
+                IncreacePlacedObjectsAmount();
+                TempPlaceableObject.Place(PlacedObjectsAmount);
                 TempPlaceableObject = null;
                 ReloadUI();
-                _tempTilemap.gameObject.SetActive(false);
+                TempTilemap.gameObject.SetActive(false);
             }
+        }
+        else
+        {
+            TempPlaceableObject.Place(TempPlaceableObject.GridBuildingID);
+            TempPlaceableObject = null;
+            ReloadUI();
+            TempTilemap.gameObject.SetActive(false);
         }
     }
 

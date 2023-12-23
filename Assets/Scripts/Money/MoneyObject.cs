@@ -95,7 +95,7 @@ public class MoneyObject : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!PointerOverUIChecker.Current.IsPointerOverUIObject() && !_isPointerMoving)
+        if (!PointerOverUIChecker.Current.IsPointerOverUIObject() && !_isPointerMoving && !GridBuildingSystem.Current.TempPlaceableObject)
         {
             GetMoneyIfAvaliable();
         }

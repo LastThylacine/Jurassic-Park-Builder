@@ -1,11 +1,11 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class PlaceableObject : MonoBehaviour
 {
-    public bool Placed { get; private set; }
+    public bool Placed;
 
     public BoundsInt Area;
+    public int GridBuildingID;
 
     [HideInInspector] public FadeInOut DisplayFadeInOut;
 
@@ -24,11 +24,25 @@ public class PlaceableObject : MonoBehaviour
         }
     }
 
+    private Vector3 _origin;
+
     #region Unity Methods
 
     private void Awake()
     {
         DisplayFadeInOut = _display.GetComponent<FadeInOut>();
+    }
+
+    private void Start()
+    {
+        if (Placed)
+        {
+            if (CanBePlaced())
+            {
+                GridBuildingSystem.Current.IncreacePlacedObjectsAmount();
+                Place(GridBuildingSystem.Current.PlacedObjectsAmount);
+            }
+        }
     }
 
     #endregion
@@ -56,11 +70,20 @@ public class PlaceableObject : MonoBehaviour
         areaTemp.position = positionInt;
         Placed = true;
 
-        PlaceGridBuildingParameters(gridBuildingID);
+        if (GridBuildingID != gridBuildingID)
+        {
+            GridBuildingID = gridBuildingID;
+
+            _paddock.name = _paddock.name + GridBuildingID;
+        }
+
+        InitializeDisplayObjects(false);
+
         GridBuildingSystem.Current.TakeArea(areaTemp);
         SelectablesManager.Current.CheckForSelectables();
 
         _paddock.GetComponent<Selectable>().PlayPlacementSound();
+        _origin = transform.position;
 
         CameraObjectFollowing.Current.SetTarget(null);
     }
@@ -69,18 +92,37 @@ public class PlaceableObject : MonoBehaviour
 
     #region Initialization Methods
 
-    public void InitializeGridBuilding()
+    public void InitializeDisplayObjects(bool isBuildingEnabled)
     {
-        _display.SetActive(true);
-        _paddock.SetActive(false);
+        _display.SetActive(isBuildingEnabled);
+        _paddock.SetActive(!isBuildingEnabled);
     }
 
-    public void PlaceGridBuildingParameters(int gridBuildingID)
-    {
-        _paddock.name = _paddock.name + gridBuildingID;
+    #endregion
 
-        _display.SetActive(false);
-        _paddock.SetActive(true);
+    #region Editing Mode
+
+    public void StartEditing()
+    {
+        GridBuildingSystem.Current.TempPlaceableObject = this;
+        InitializeDisplayObjects(true);
+        CameraObjectFollowing.Current.SetTarget(transform);
+        GridBuildingSystem.Current.TempTilemap.gameObject.SetActive(true);
+
+        Vector3Int positionInt = GridBuildingSystem.Current.GridLayout.WorldToCell(transform.position);
+        BoundsInt areaTemp = Area;
+        areaTemp.position = positionInt;
+
+        GridBuildingSystem.Current.SetAreaWhite(areaTemp, GridBuildingSystem.Current.MainTilemap);
+
+        GridBuildingSystem.Current.FollowBuilding();
+        GridBuildingSystem.Current.ReloadUI();
+    }
+
+    public void CancelEditing()
+    {
+        transform.position = _origin;
+        Place(GridBuildingID);
     }
 
     #endregion
