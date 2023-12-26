@@ -1,14 +1,12 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class Paddock : Selectable
 {
-    [SerializeField] private Animator _dinosaurAnimator;
     [SerializeField] private GameObject _evolutionsChanger;
-    [SerializeField] private AnimationEventsListener _dinosaurAnimationEventsListener;
 
+    private AnimationEventsListener _dinosaurAnimationEventsListener;
     private MoneyObject _moneyObject;
+    private Animator _dinosaurAnimator;
 
     private void Awake()
     {
@@ -18,6 +16,10 @@ public class Paddock : Selectable
     private void Start()
     {
         _evolutionsChanger.SetActive(IsSelected);
+
+        _dinosaurAnimationEventsListener = GetComponentInChildren<AnimationEventsListener>();
+
+        _dinosaurAnimator = _dinosaurAnimationEventsListener.GetComponent<Animator>();
     }
 
     public override void Select()

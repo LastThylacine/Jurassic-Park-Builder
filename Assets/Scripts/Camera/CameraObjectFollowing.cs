@@ -12,13 +12,25 @@ public class CameraObjectFollowing : MonoBehaviour
     private Vector3 _velocity = Vector3.zero;
     private PlaceableObjectMovementListener _placeableObjectMovementListener;
 
+    private Bounds _mapBounds;
+    private float _objectWidth;
+    private float _objectHeight;
+
     private void Awake() => _camera = FindObjectOfType<Camera>();
 
-    private void Start() => Current = this;
+    private void Start()
+    {
+        Current = this;
+
+        _mapBounds = Globals.WorldBounds;
+    }
 
     private void Update()
     {
-        if (Target && _placeableObjectMovementListener.IsMoving)
+        if (!Target)
+            return;
+
+        if (_placeableObjectMovementListener.IsMoving)
         {
             Vector2 mousePosition = Input.mousePosition;
 
@@ -30,7 +42,26 @@ public class CameraObjectFollowing : MonoBehaviour
                 _camera.transform.position = Vector3.SmoothDamp(_camera.transform.position, targetPosition, ref _velocity, _smoothDamp);
             }
         }
+        else
+        {
+            Vector2 targetPosition = new Vector2(Target.position.x, Target.position.y);
+
+            _camera.transform.position = Vector3.SmoothDamp(_camera.transform.position, targetPosition, ref _velocity, _smoothDamp);
+        }
     }
+
+    //private void LateUpdate()
+    //{
+    //    if (!Target)
+    //        return;
+
+    //    Target.transform.localPosition = new Vector3
+    //        (
+    //        Mathf.Clamp(Target.transform.localPosition.x, _mapBounds.min.x, _mapBounds.max.x),
+    //        Mathf.Clamp(Target.transform.localPosition.y, _mapBounds.min.y, _mapBounds.max.y),
+    //        Target.transform.localPosition.z
+    //        );
+    //}
 
     public void SetTarget(Transform target)
     {

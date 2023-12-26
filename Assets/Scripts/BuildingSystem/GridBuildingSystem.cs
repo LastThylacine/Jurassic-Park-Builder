@@ -127,7 +127,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         ClearArea();
 
-        TempPlaceableObject.Area.position = GridLayout.WorldToCell(TempPlaceableObject.gameObject.transform.position);
+        TempPlaceableObject.Area.position = GridLayout.WorldToCell(TempPlaceableObject.transform.position);
         BoundsInt buildingArea = TempPlaceableObject.Area;
 
         TileBase[] baseArray = GetTilesBlock(buildingArea, MainTilemap);
@@ -182,7 +182,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     #region Building Movement
 
-    public void SaveOffset()
+    public void SaveObjectOffset()
     {
         if (!TempPlaceableObject)
             return;
@@ -194,7 +194,7 @@ public class GridBuildingSystem : MonoBehaviour
         _deltaY = _startTouchPosition.y - TempPlaceableObject.transform.position.y;
     }
 
-    public void MoveGridBuildingWithOffset()
+    public void MoveObjectWithOffset()
     {
         if (!TempPlaceableObject)
             return;
@@ -291,10 +291,13 @@ public class GridBuildingSystem : MonoBehaviour
         }
         else
         {
-            TempPlaceableObject.Place(TempPlaceableObject.GridBuildingID);
-            TempPlaceableObject = null;
-            ReloadUI();
-            TempTilemap.gameObject.SetActive(false);
+            if (TempPlaceableObject.CanBePlaced())
+            {
+                TempPlaceableObject.Place(TempPlaceableObject.GridBuildingID);
+                TempPlaceableObject = null;
+                ReloadUI();
+                TempTilemap.gameObject.SetActive(false);
+            }
         }
     }
 

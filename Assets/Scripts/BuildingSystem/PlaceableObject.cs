@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlaceableObject : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class PlaceableObject : MonoBehaviour
         }
     }
 
+    private Selectable _selectable;
+    private Button _editButton;
     private Vector3 _origin;
 
     #region Unity Methods
@@ -43,8 +46,12 @@ public class PlaceableObject : MonoBehaviour
                 Place(GridBuildingSystem.Current.PlacedObjectsAmount);
             }
         }
-    }
 
+        _editButton = FindObjectOfType<EditButton>(true).GetComponent<Button>();
+        _editButton.onClick.AddListener(StartEditing);
+
+        _selectable = _paddock.GetComponent<Selectable>();
+    }
     #endregion
 
     #region Build Methods
@@ -65,10 +72,17 @@ public class PlaceableObject : MonoBehaviour
 
     public void Place(int gridBuildingID)
     {
+        InitializeDisplayObjects(false);
+
+        if (!Placed)
+            _paddock.GetComponent<Selectable>().PlayPlacementSound();
+
         Vector3Int positionInt = GridBuildingSystem.Current.GridLayout.LocalToCell(transform.position);
         BoundsInt areaTemp = Area;
         areaTemp.position = positionInt;
         Placed = true;
+
+        transform.position = GridBuildingSystem.Current.GridLayout.CellToLocalInterpolated(positionInt);
 
         if (GridBuildingID != gridBuildingID)
         {
@@ -76,13 +90,9 @@ public class PlaceableObject : MonoBehaviour
 
             _paddock.name = _paddock.name + GridBuildingID;
         }
-
-        InitializeDisplayObjects(false);
-
         GridBuildingSystem.Current.TakeArea(areaTemp);
         SelectablesManager.Current.CheckForSelectables();
 
-        _paddock.GetComponent<Selectable>().PlayPlacementSound();
         _origin = transform.position;
 
         CameraObjectFollowing.Current.SetTarget(null);
@@ -104,19 +114,22 @@ public class PlaceableObject : MonoBehaviour
 
     public void StartEditing()
     {
-        GridBuildingSystem.Current.TempPlaceableObject = this;
-        InitializeDisplayObjects(true);
-        CameraObjectFollowing.Current.SetTarget(transform);
-        GridBuildingSystem.Current.TempTilemap.gameObject.SetActive(true);
+        if (_selectable.IsSelected)
+        {
+            GridBuildingSystem.Current.TempPlaceableObject = this;
+            InitializeDisplayObjects(true);
+            CameraObjectFollowing.Current.SetTarget(transform);
+            GridBuildingSystem.Current.TempTilemap.gameObject.SetActive(true);
 
-        Vector3Int positionInt = GridBuildingSystem.Current.GridLayout.WorldToCell(transform.position);
-        BoundsInt areaTemp = Area;
-        areaTemp.position = positionInt;
+            Vector3Int positionInt = GridBuildingSystem.Current.GridLayout.WorldToCell(transform.position);
+            BoundsInt areaTemp = Area;
+            areaTemp.position = positionInt;
 
-        GridBuildingSystem.Current.SetAreaWhite(areaTemp, GridBuildingSystem.Current.MainTilemap);
+            GridBuildingSystem.Current.SetAreaWhite(areaTemp, GridBuildingSystem.Current.MainTilemap);
 
-        GridBuildingSystem.Current.FollowBuilding();
-        GridBuildingSystem.Current.ReloadUI();
+            GridBuildingSystem.Current.FollowBuilding();
+            GridBuildingSystem.Current.ReloadUI();
+        }
     }
 
     public void CancelEditing()

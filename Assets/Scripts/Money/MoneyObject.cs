@@ -33,7 +33,6 @@ public class MoneyObject : MonoBehaviour
         _collectMoneyButton = FindObjectOfType<CollectMoneyButton>(true).GetComponent<Button>();
 
         _maximumSeconds = MaximumMinutes * 60;
-        _collectMoneyButton.onClick.AddListener(GetMoneyIfAvaliableByButton);
         _selectable = GetComponent<Selectable>();
         if (GetComponent<Paddock>())
             _paddock = GetComponent<Paddock>();
@@ -56,6 +55,8 @@ public class MoneyObject : MonoBehaviour
         CurrentMoneyInteger += Mathf.FloorToInt(_moneyPerSecond * secondsPassed);
 
         _currentMoneyFloated = CurrentMoneyInteger;
+
+        _collectMoneyButton.onClick.AddListener(GetMoneyIfAvaliableByButton);
     }
 
     private void Update()

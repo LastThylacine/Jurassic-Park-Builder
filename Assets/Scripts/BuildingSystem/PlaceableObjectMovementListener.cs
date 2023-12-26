@@ -8,6 +8,7 @@ public class PlaceableObjectMovementListener : MonoBehaviour
     public bool IsMoving;
 
     private PlaceableObject _placeableObject;
+    private bool _isCanMove;
 
     private void Start()
     {
@@ -16,31 +17,29 @@ public class PlaceableObjectMovementListener : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(GridBuildingSystem.Current.TempPlaceableObject != _placeableObject)
+        if (GridBuildingSystem.Current.TempPlaceableObject != _placeableObject || PointerOverUIChecker.Current.IsPointerOverUIObject())
         {
+            _isCanMove = false;
             return;
         }
 
-        GridBuildingSystem.Current.SaveOffset();
+        GridBuildingSystem.Current.SaveObjectOffset();
+        _isCanMove = true;
     }
 
     private void OnMouseDrag()
     {
-        if (GridBuildingSystem.Current.TempPlaceableObject != _placeableObject)
-        {
+        if (!_isCanMove)
             return;
-        }
 
-        GridBuildingSystem.Current.MoveGridBuildingWithOffset();
+        GridBuildingSystem.Current.MoveObjectWithOffset();
         IsMoving = true;
     }
 
     private void OnMouseUp()
     {
-        if (GridBuildingSystem.Current.TempPlaceableObject != _placeableObject)
-        {
+        if (!_isCanMove)
             return;
-        }
 
         IsMoving = false;
     }

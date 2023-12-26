@@ -20,4 +20,9 @@ public class AnimationEventsListener : MonoBehaviour
     {
         _isAnimationEnded = false;
     }
+
+    private void OnDisable()
+    {
+        OnAnimationEnded();
+    }
 }

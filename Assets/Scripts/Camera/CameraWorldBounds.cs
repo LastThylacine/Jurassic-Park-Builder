@@ -24,6 +24,8 @@ public class CameraWorldBounds : MonoBehaviour
     private void Start()
     {
         RecalculateBounds();
+
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void LateUpdate()
