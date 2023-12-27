@@ -53,7 +53,7 @@ public class BuildingManager : MonoBehaviour
     {
         for (int i = 0; i < _buildings.Length; i++)
         {
-            _buildings[i].Unselect();
+            _buildings[i].Deselect();
         }
     }
 }

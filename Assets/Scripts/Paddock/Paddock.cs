@@ -1,45 +1,41 @@
 using UnityEngine;
 
-public class Paddock : Selectable
+public class Paddock : MonoBehaviour, ISelectable
 {
-    [SerializeField] private GameObject _evolutionsChanger;
+	[SerializeField] private GameObject _evolutionsChanger;
 
-    private AnimationEventsListener _dinosaurAnimationEventsListener;
-    private MoneyObject _moneyObject;
-    private Animator _dinosaurAnimator;
+	private AnimationEventsListener _dinosaurAnimationEventsListener;
+	private MoneyObject _moneyObject;
+	private Animator _dinosaurAnimator;
 
-    private void Awake()
-    {
-        _moneyObject = GetComponent<MoneyObject>();
-    }
+	public bool IsSelected { get; internal set; }
 
-    private void Start()
-    {
-        _evolutionsChanger.SetActive(IsSelected);
+	private void Awake()
+	{
+		_moneyObject = GetComponent<MoneyObject>();
+	}
 
-        _dinosaurAnimationEventsListener = GetComponentInChildren<AnimationEventsListener>();
+	private void Start()
+	{
+		// _evolutionsChanger.SetActive(IsSelected);
 
-        _dinosaurAnimator = _dinosaurAnimationEventsListener.GetComponent<Animator>();
-    }
+		_dinosaurAnimationEventsListener = GetComponentInChildren<AnimationEventsListener>();
 
-    public override void Select()
-    {
-        base.Select();
+		_dinosaurAnimator = _dinosaurAnimationEventsListener.GetComponent<Animator>();
+	}
 
-        _evolutionsChanger.SetActive(IsSelected);
+	public void Select()
+	{
+		if (_dinosaurAnimationEventsListener.IsAnimationEnded && _moneyObject.CurrentMoneyInteger != 0)
+		{
+			_dinosaurAnimator.SetTrigger("Fun");
 
-        if (_dinosaurAnimationEventsListener.IsAnimationEnded && _moneyObject.CurrentMoneyInteger != 0)
-        {
-            _dinosaurAnimator.SetTrigger("Fun");
+			// PlaySound(Sounds[2], 0.5f);
+		}
+	}
 
-            PlaySound(Sounds[2], 0.5f);
-        }
-    }
+	public void Deselect()
+	{
 
-    public override void Unselect()
-    {
-        base.Unselect();
-
-        _evolutionsChanger.SetActive(IsSelected);
-    }
+	}
 }

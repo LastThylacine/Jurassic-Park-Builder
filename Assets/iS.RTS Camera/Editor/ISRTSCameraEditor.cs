@@ -214,22 +214,24 @@ public class ISRTSCameraEditor : Editor {
 		keyboardSetting = EditorGUILayout.Foldout(keyboardSetting,"Keyboard Control Setting");
 		if (keyboardSetting) {
 			mCam.keyBoardControl = EditorGUILayout.Toggle("  Enabled",mCam.keyBoardControl);
-			if(mCam.keyBoardControl){
-				mCam.desktopMoveSpeed = EditorGUILayout.FloatField("  Move Speed",mCam.desktopMoveSpeed);
-				mCam.desktopRotateSpeed = EditorGUILayout.FloatField("  Rotate Speed",mCam.desktopRotateSpeed);
+			if (mCam.keyBoardControl)
+			{
+				mCam.desktopMoveSpeed = EditorGUILayout.FloatField("  Move Speed", mCam.desktopMoveSpeed);
+				mCam.desktopRotateSpeed = EditorGUILayout.FloatField("  Rotate Speed", mCam.desktopRotateSpeed);
 
-				EditorGUILayout.Space ();
+				EditorGUILayout.Space();
 
-				string[] axisList = ISEInputAxisReader.GetInputAxisList ();
+				string[] axisList = ISEInputAxisReader.GetInputAxisList();
 
 
-				mCam.horizontalKeyboardAxis = StringPopup ("  Horizontal Axis", axisList, mCam.horizontalKeyboardAxis);
-				mCam.verticalKeyboardAxis = StringPopup ("  Vertical Axis", axisList, mCam.verticalKeyboardAxis);
-				mCam.rotateAxis = StringPopup ("  Rotate Axis", axisList, mCam.rotateAxis);
+				mCam.horizontalKeyboardAxis = StringPopup("  Horizontal Axis", axisList, mCam.horizontalKeyboardAxis);
+				mCam.verticalKeyboardAxis = StringPopup("  Vertical Axis", axisList, mCam.verticalKeyboardAxis);
+				mCam.rotateAxis = StringPopup("  Rotate Axis", axisList, mCam.rotateAxis);
 
 			}
-			else{
-				EditorGUILayout.HelpBox("Enabel Keyboard Control to control camera with keyboard.",MessageType.Info);
+			else
+			{
+				EditorGUILayout.HelpBox("Enabel Keyboard Control to control camera with keyboard.", MessageType.Info);
 			}
 
 			EditorGUILayout.Space ();

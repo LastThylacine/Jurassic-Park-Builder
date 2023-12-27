@@ -14,6 +14,6 @@ public class DebugBuildingButton : MonoBehaviour
 
     void Update()
     {
-        _button.interactable = !GridBuildingSystem.Current.TempPlaceableObject;
+        _button.interactable = !GridManager.Instance.TempPlaceableObject;
     }
 }

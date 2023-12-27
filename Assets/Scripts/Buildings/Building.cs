@@ -1,31 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Building : Selectable
+public class Building : ISelectable
 {
     [SerializeField] private Animator _selectedAnimator;
 
-    private void OnMouseUp()
+	public bool IsSelected { get; internal set; }
+
+	public void Select()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && !GridBuildingSystem.Current.TempPlaceableObject)
-        {
-            Select();
-        }
+        _selectedAnimator.SetBool("FadeInOut", true);
     }
 
-    public override void Select()
+    public void Deselect()
     {
-        base.Select();
 
-        _selectedAnimator.SetBool("FadeInOut", IsSelected);
-    }
-
-    public override void Unselect()
-    {
-        base.Unselect();
-
-        _selectedAnimator.SetBool("FadeInOut", IsSelected);
+        _selectedAnimator.SetBool("FadeInOut", false);
     }
 }

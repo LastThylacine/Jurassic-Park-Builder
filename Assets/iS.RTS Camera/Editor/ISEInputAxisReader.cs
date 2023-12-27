@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace SPINACH.Editor{
+namespace SPINACH.Editor
+{
 
 	public enum InputType
 	{
@@ -11,8 +11,10 @@ namespace SPINACH.Editor{
 		JoystickAxis,
 	};
 
-	public class ISEInputAxisReader : MonoBehaviour {
-		static public string[] GetInputAxisList(){
+	public class ISEInputAxisReader : MonoBehaviour
+	{
+		static public string[] GetInputAxisList()
+		{
 			var inputManager = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset")[0];
 
 			SerializedObject obj = new SerializedObject(inputManager);
@@ -21,10 +23,11 @@ namespace SPINACH.Editor{
 
 			string[] list = new string[axisArray.arraySize];
 
-			for (int i = 0; i < axisArray.arraySize; ++i) {
-				var axis = axisArray.GetArrayElementAtIndex (i);
+			for (int i = 0; i < axisArray.arraySize; ++i)
+			{
+				var axis = axisArray.GetArrayElementAtIndex(i);
 
-				list[i] = axis.FindPropertyRelative ("m_Name").stringValue;
+				list[i] = axis.FindPropertyRelative("m_Name").stringValue;
 			}
 
 			return list;

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class DinosaurLevelResourcesManager : MonoBehaviour
 
     public int GetMaximumMoneyByLevel(int level)
     {
-        return _levelResources[level]._maximumMoneyForTime;
+        return 0; // _levelResources[level]._maximumMoneyForTime;
     }
 
     [Serializable]

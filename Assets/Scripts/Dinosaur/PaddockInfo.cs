@@ -24,7 +24,7 @@ public class PaddockInfo : MonoBehaviour
 
     private void Update()
     {
-        if (!_paddock.IsSelected)
+		if (!_paddock.IsSelected)
             return;
 
         _currentLevel = _dinosaurLevelManager.CurrentLevel;

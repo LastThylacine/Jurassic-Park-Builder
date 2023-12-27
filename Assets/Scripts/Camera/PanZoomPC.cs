@@ -73,7 +73,7 @@ public class PanZoomPC : MonoBehaviour
         transform.position = Vector2.Lerp(transform.position, newPosition, _moveLerpRate * Time.deltaTime);
         transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
 
-        if (_controls.Main.MouseScrollButon.ReadValue<float>() == 0)
+        if (_controls.Main.MouseScrollButton.ReadValue<float>() == 0)
         {
             _startPoint = Vector2.zero;
             _startCameraPosition = Vector2.zero;
@@ -123,8 +123,8 @@ public class PanZoomPC : MonoBehaviour
         _controls.Enable();
 
         _controls.Main.MouseScroll.performed += OnZoom;
-        _controls.Main.MouseScrollButon.started += OnScrollButtonClick;
-        _controls.Main.MouseScrollButon.performed += OnScrollButtonClick;
+        _controls.Main.MouseScrollButton.started += OnScrollButtonClick;
+        _controls.Main.MouseScrollButton.performed += OnScrollButtonClick;
     }
 
     private void OnDisable()
@@ -132,7 +132,7 @@ public class PanZoomPC : MonoBehaviour
         _controls.Disable();
 
         _controls.Main.MouseScroll.performed -= OnZoom;
-        _controls.Main.MouseScrollButon.started += OnScrollButtonClick;
-        _controls.Main.MouseScrollButon.performed += OnScrollButtonClick;
+        _controls.Main.MouseScrollButton.started += OnScrollButtonClick;
+        _controls.Main.MouseScrollButton.performed += OnScrollButtonClick;
     }
 }

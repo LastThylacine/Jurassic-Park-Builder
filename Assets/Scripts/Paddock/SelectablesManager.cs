@@ -1,8 +1,8 @@
-using System.Linq;
 using UnityEngine;
 
 public class SelectablesManager : MonoBehaviour
 {
+	/*
     public static SelectablesManager Current;
 
     [SerializeField] private bool _isSomethingSelected;
@@ -57,7 +57,7 @@ public class SelectablesManager : MonoBehaviour
 
     public void InitializeUI()
     {
-        if (GridBuildingSystem.Current.TempPlaceableObject || !_currentSelectable)
+        if (GridManager.Instance.TempPlaceableObject || !_currentSelectable)
             return;
 
         if (_isSomethingSelected)
@@ -115,10 +115,12 @@ public class SelectablesManager : MonoBehaviour
             }
         }
     }
+    
 }
 
 public enum SelectableType
 {
     Paddock,
     Building
+    */
 }

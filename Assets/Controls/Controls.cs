@@ -162,7 +162,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     {
         private @Controls m_Wrapper;
         public MainActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MouseScrollButon => m_Wrapper.m_Main_MouseScrollButon;
+        public InputAction MouseScrollButton => m_Wrapper.m_Main_MouseScrollButon;
         public InputAction @MouseScroll => m_Wrapper.m_Main_MouseScroll;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
@@ -173,9 +173,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MainActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MainActionsCallbackInterfaces.Add(instance);
-            @MouseScrollButon.started += instance.OnMouseScrollButon;
-            @MouseScrollButon.performed += instance.OnMouseScrollButon;
-            @MouseScrollButon.canceled += instance.OnMouseScrollButon;
+            MouseScrollButton.started += instance.OnMouseScrollButon;
+            MouseScrollButton.performed += instance.OnMouseScrollButon;
+            MouseScrollButton.canceled += instance.OnMouseScrollButon;
             @MouseScroll.started += instance.OnMouseScroll;
             @MouseScroll.performed += instance.OnMouseScroll;
             @MouseScroll.canceled += instance.OnMouseScroll;
@@ -183,9 +183,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IMainActions instance)
         {
-            @MouseScrollButon.started -= instance.OnMouseScrollButon;
-            @MouseScrollButon.performed -= instance.OnMouseScrollButon;
-            @MouseScrollButon.canceled -= instance.OnMouseScrollButon;
+            MouseScrollButton.started -= instance.OnMouseScrollButon;
+            MouseScrollButton.performed -= instance.OnMouseScrollButon;
+            MouseScrollButton.canceled -= instance.OnMouseScrollButon;
             @MouseScroll.started -= instance.OnMouseScroll;
             @MouseScroll.performed -= instance.OnMouseScroll;
             @MouseScroll.canceled -= instance.OnMouseScroll;

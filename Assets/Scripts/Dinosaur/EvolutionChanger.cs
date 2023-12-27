@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +16,7 @@ public class EvolutionChanger : MonoBehaviour
     private void Start()
     {
         _dinosaurLevelManager = GetComponentInParent<DinosaurLevelManager>();
-        _parrentName = GetComponentInParent<Paddock>().gameObject.name;
+        // _parrentName = GetComponentInParent<Paddock>().gameObject.name;
 
         _skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
