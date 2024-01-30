@@ -49,16 +49,16 @@ public class EvolutionChanger : MonoBehaviour
         switch (index)
         {
             case 0:
-                _dinosaurLevelManager.SetLevel(1);
-                break;
-            case 1:
                 _dinosaurLevelManager.SetLevel(11);
                 break;
-            case 2:
+            case 1:
                 _dinosaurLevelManager.SetLevel(21);
                 break;
-            case 3:
+            case 2:
                 _dinosaurLevelManager.SetLevel(31);
+                break;
+            case 3:
+                _dinosaurLevelManager.SetLevel(40);
                 break;
         }
 
