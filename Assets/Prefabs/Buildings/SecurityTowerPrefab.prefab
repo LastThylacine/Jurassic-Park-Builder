@@ -352,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44cd90e49f4a1a489b9890f3986580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsMoving: 0
 --- !u!210 &2357536708258815039
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -974,12 +975,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b8d154379dc7a7499b100e9bbc42395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Placed: 0
   Area:
     m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 3, y: 3, z: 1}
+  GridBuildingID: 0
   DisplayFadeInOut: {fileID: 0}
   _display: {fileID: 7992180451880170234}
-  _paddock: {fileID: 738122557006344997}
+  _main: {fileID: 738122557006344997}
 --- !u!1 &5580358634049238326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,6 +1446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44cd90e49f4a1a489b9890f3986580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsMoving: 0
 --- !u!114 &8482854202371293035
 MonoBehaviour:
   m_ObjectHideFlags: 0

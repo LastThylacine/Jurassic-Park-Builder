@@ -7,7 +7,6 @@ public class GridBuildingSystem : MonoBehaviour
     public static GridBuildingSystem Current;
 
     public GridLayout GridLayout;
-    public int PlacedObjectsAmount;
 
     [SerializeField] private GameObject[] _buildingUI;
     [SerializeField] private GameObject[] _notBuildingUI;
@@ -99,7 +98,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     #region Building Placement
 
-    public void InitializeWithBuilding(GameObject building)
+    public GameObject InitializeWithBuilding(GameObject building)
     {
         TempPlaceableObject = Instantiate(building, Vector3.zero, Quaternion.identity).GetComponent<PlaceableObject>();
         TempPlaceableObject.InitializeDisplayObjects(true);
@@ -114,6 +113,8 @@ public class GridBuildingSystem : MonoBehaviour
 
         CameraObjectFollowing.Current.SetTarget(TempPlaceableObject.transform);
         TempTilemap.gameObject.SetActive(true);
+
+        return TempPlaceableObject.gameObject;
     }
 
     private void ClearArea()
@@ -171,11 +172,6 @@ public class GridBuildingSystem : MonoBehaviour
     {
         SetTilesBlock(area, TileType.Empty, TempTilemap);
         SetTilesBlock(area, TileType.Green, MainTilemap);
-    }
-
-    public void IncreacePlacedObjectsAmount()
-    {
-        PlacedObjectsAmount++;
     }
 
     #endregion
@@ -282,8 +278,7 @@ public class GridBuildingSystem : MonoBehaviour
         {
             if (TempPlaceableObject.CanBePlaced())
             {
-                IncreacePlacedObjectsAmount();
-                TempPlaceableObject.Place(PlacedObjectsAmount);
+                TempPlaceableObject.Place();
                 TempPlaceableObject = null;
                 ReloadUI();
                 TempTilemap.gameObject.SetActive(false);
@@ -293,7 +288,7 @@ public class GridBuildingSystem : MonoBehaviour
         {
             if (TempPlaceableObject.CanBePlaced())
             {
-                TempPlaceableObject.Place(TempPlaceableObject.GridBuildingID);
+                TempPlaceableObject.Place();
                 TempPlaceableObject = null;
                 ReloadUI();
                 TempTilemap.gameObject.SetActive(false);

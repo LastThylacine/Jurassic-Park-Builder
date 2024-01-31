@@ -1,3 +1,5 @@
+using System;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,10 +10,12 @@ public class PlaceableObject : MonoBehaviour
     public BoundsInt Area;
     public int GridBuildingID;
 
+    [ReadOnly()] public PlaceableObjectData data = new PlaceableObjectData();
+
     [HideInInspector] public FadeInOut DisplayFadeInOut;
 
     [SerializeField] private GameObject _display;
-    [SerializeField] private GameObject _paddock;
+    [SerializeField] private GameObject _main;
 
     public GameObject Display
     {
@@ -25,9 +29,11 @@ public class PlaceableObject : MonoBehaviour
         }
     }
 
+    private PlaceableObjectItem _placeableObjectItem;
     private Selectable _selectable;
     private Button _editButton;
     private Vector3 _origin;
+    private bool _placedFromBeginning = false;
 
     #region Unity Methods
 
@@ -42,16 +48,29 @@ public class PlaceableObject : MonoBehaviour
         {
             if (CanBePlaced())
             {
-                GridBuildingSystem.Current.IncreacePlacedObjectsAmount();
-                Place(GridBuildingSystem.Current.PlacedObjectsAmount);
+                Place();
+                _placedFromBeginning = true;
             }
         }
 
         _editButton = FindObjectOfType<EditButton>(true).GetComponent<Button>();
         _editButton.onClick.AddListener(StartEditing);
 
-        _selectable = _paddock.GetComponent<Selectable>();
+        _selectable = _main.GetComponent<Selectable>();
     }
+
+    private void OnApplicationQuit()
+    {
+        if (!_placedFromBeginning)
+        {
+            if (Placed)
+            {
+                data.Position = transform.position;
+                SaveManager.Current.saveData.AddData(data);
+            }
+        }
+    }
+
     #endregion
 
     #region Build Methods
@@ -70,12 +89,12 @@ public class PlaceableObject : MonoBehaviour
         return false;
     }
 
-    public void Place(int gridBuildingID)
+    public void Place()
     {
         InitializeDisplayObjects(false);
 
         if (!Placed)
-            _paddock.GetComponent<Selectable>().PlayPlacementSound();
+            _main.GetComponent<Selectable>().PlayPlacementSound();
 
         Vector3Int positionInt = GridBuildingSystem.Current.GridLayout.LocalToCell(transform.position);
         BoundsInt areaTemp = Area;
@@ -84,12 +103,6 @@ public class PlaceableObject : MonoBehaviour
 
         transform.position = GridBuildingSystem.Current.GridLayout.CellToLocalInterpolated(positionInt);
 
-        if (GridBuildingID != gridBuildingID)
-        {
-            GridBuildingID = gridBuildingID;
-
-            _paddock.name = _paddock.name + GridBuildingID;
-        }
         GridBuildingSystem.Current.TakeArea(areaTemp);
         SelectablesManager.Current.CheckForSelectables();
 
@@ -105,7 +118,23 @@ public class PlaceableObject : MonoBehaviour
     public void InitializeDisplayObjects(bool isBuildingEnabled)
     {
         _display.SetActive(isBuildingEnabled);
-        _paddock.SetActive(!isBuildingEnabled);
+        _main.SetActive(!isBuildingEnabled);
+    }
+
+    public void Initialize(PlaceableObjectItem placeableObjectItem)
+    {
+        _placeableObjectItem = placeableObjectItem;
+        data.ItemName = placeableObjectItem.name;
+        data.ID = SaveData.GenerateId();
+        _main.name = _main.name + data.ID;
+    }
+
+    public void Initialize(PlaceableObjectItem placeableObjectItem, PlaceableObjectData placeableObjectData)
+    {
+        _placeableObjectItem = placeableObjectItem;
+        data = placeableObjectData;
+        _main.name = _main.name + data.ID;
+        transform.position = data.Position;
     }
 
     #endregion
@@ -135,7 +164,7 @@ public class PlaceableObject : MonoBehaviour
     public void CancelEditing()
     {
         transform.position = _origin;
-        Place(GridBuildingID);
+        Place();
     }
 
     #endregion

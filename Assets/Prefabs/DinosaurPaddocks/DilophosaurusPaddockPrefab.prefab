@@ -3726,9 +3726,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7edf49cc99ab28c4f926d9c20651eaba, type: 3}
   IsSelected: 0
   _objectsFadeInOut: {fileID: 3708635208963666018}
-  _dinosaurAnimator: {fileID: 7802954352931030990}
   _evolutionsChanger: {fileID: 7148360279365762116}
-  _dinosaurAnimationEventsListener: {fileID: 270434831778980419}
 --- !u!114 &8288538152985744141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4489,12 +4487,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b8d154379dc7a7499b100e9bbc42395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Placed: 0
   Area:
     m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 6, y: 6, z: 1}
+  GridBuildingID: 0
   DisplayFadeInOut: {fileID: 0}
   _display: {fileID: 7819796553852588921}
-  _paddock: {fileID: 5949953740542757079}
+  _main: {fileID: 5949953740542757079}
 --- !u!1 &7148360279365762116
 GameObject:
   m_ObjectHideFlags: 0
@@ -5046,6 +5046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44cd90e49f4a1a489b9890f3986580a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsMoving: 0
 --- !u!114 &2799006626950770224
 MonoBehaviour:
   m_ObjectHideFlags: 0
