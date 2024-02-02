@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MoneyManager : MonoBehaviour
+public class MoneyManager : CurrencyManager
 {
     [SerializeField] private int _moneyCount = 1000;
     [SerializeField] private TextMeshProUGUI _textMoney;

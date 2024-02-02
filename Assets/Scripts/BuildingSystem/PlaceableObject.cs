@@ -1,4 +1,3 @@
-using System;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,8 +47,8 @@ public class PlaceableObject : MonoBehaviour
         {
             if (CanBePlaced())
             {
-                Place();
                 _placedFromBeginning = true;
+                Place();
             }
         }
 
@@ -61,14 +60,14 @@ public class PlaceableObject : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if (!_placedFromBeginning)
-        {
-            if (Placed)
-            {
-                data.Position = transform.position;
-                SaveManager.Current.saveData.AddData(data);
-            }
-        }
+        //if (!_placedFromBeginning)
+        //{
+        //    if (Placed)
+        //    {
+        //        data.Position = transform.position;
+        //        SaveManager.Current.saveData.AddData(data);
+        //    }
+        //}
     }
 
     #endregion
@@ -107,6 +106,13 @@ public class PlaceableObject : MonoBehaviour
         SelectablesManager.Current.CheckForSelectables();
 
         _origin = transform.position;
+
+        if (!_placedFromBeginning)
+        {
+            data.Position = transform.position;
+            SaveManager.Current.saveData.AddData(data);
+            SaveManager.Current.SaveGame();
+        }
 
         CameraObjectFollowing.Current.SetTarget(null);
     }

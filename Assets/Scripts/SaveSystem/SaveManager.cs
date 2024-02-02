@@ -50,10 +50,14 @@ public class SaveManager : MonoBehaviour
         }
 
         SaveData.IdCount = maxId;
-        Debug.Log(maxId);
     }
 
-    private void OnDisable()
+    //private void OnDisable()
+    //{
+    //    SaveSystem.Save(saveData);
+    //}
+
+    public void SaveGame()
     {
         SaveSystem.Save(saveData);
     }

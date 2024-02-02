@@ -46,7 +46,7 @@ public class CameraObjectFollowing : MonoBehaviour
         {
             Vector2 targetPosition = new Vector2(Target.position.x, Target.position.y);
 
-            _camera.transform.position = Vector3.SmoothDamp(_camera.transform.position, targetPosition, ref _velocity, _smoothDamp);
+            _camera.transform.position = Vector3.Lerp(_camera.transform.position, targetPosition, 2f * Time.deltaTime);
         }
     }
 

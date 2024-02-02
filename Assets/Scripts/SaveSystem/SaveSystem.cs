@@ -6,7 +6,7 @@ public static class SaveSystem
 {
     private static readonly string SAVE_FOLDER = Application.persistentDataPath + "/Saves/";
     public const string FILE_NAME = "SaveFile";
-    private const string SAVE_EXTENTION = ".dir";
+    private const string SAVE_EXTENTION = ".json";
     public static string FileName { get; private set; }
     public static string FilePath { get; private set; }
 
