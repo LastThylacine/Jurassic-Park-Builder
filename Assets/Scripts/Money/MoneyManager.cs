@@ -3,45 +3,36 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MoneyManager : CurrencyManager
+public class MoneyManager : MonoBehaviour
 {
-    [SerializeField] private int _moneyCount = 1000;
-    [SerializeField] private TextMeshProUGUI _textMoney;
+    [SerializeField] private int _defaulMoneyAmount = 1000;
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey("Money"))
-        {
-            _moneyCount = PlayerPrefs.GetInt("Money");
-            DisplayMoney();
-        }
-        else
-        {
-            _moneyCount = 1000;
-        }
+        //if (PlayerPrefs.HasKey("Money"))
+        //{
+        //    _moneyCount = PlayerPrefs.GetInt("Money");
+        //    DisplayMoney();
+        //}
+        //else
+        //{
+        //    _moneyCount = 1000;
+        //}
+
+        AddCoins(_defaulMoneyAmount);
     }
 
-    public void AddMoney(int money)
+    public void AddCoins(int amount)
     {
-        _moneyCount += money;
-        SaveMoney(_moneyCount);
-        DisplayMoney();
+        CurrencyChangeGameEvent info = new CurrencyChangeGameEvent(amount, CurrencyType.Coins);
+
+        EventManager.Instance.QueueEvent(info);
     }
 
-    public void RemoveMoney(int money)
+    public void RemoveCoins(int amount)
     {
-        _moneyCount -= money;
-        DisplayMoney();
-        SaveMoney(_moneyCount);
-    }
+        CurrencyChangeGameEvent info = new CurrencyChangeGameEvent(-amount, CurrencyType.Coins);
 
-    private void DisplayMoney()
-    {
-        _textMoney.text = _moneyCount.ToString();
-    }
-
-    private void SaveMoney(int money)
-    {
-        PlayerPrefs.SetInt("Money", money);
+        EventManager.Instance.QueueEvent(info);
     }
 }

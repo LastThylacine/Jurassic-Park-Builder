@@ -160,7 +160,7 @@ public class MoneyObject : MonoBehaviour
         _tapVFX.SetActive(true);
         _moneyCounter.SetActive(true);
         _moneyCountDisplayer.DisplayCount(CurrentMoneyInteger);
-        _moneyManager.AddMoney(CurrentMoneyInteger);
+        _moneyManager.AddCoins(CurrentMoneyInteger);
         _currentMoneyFloated = 0;
         CurrentMoneyInteger = 0;
         _selectable.PlaySound(_selectable.Sounds[0]);
