@@ -123,7 +123,7 @@ public class MoneyObject : MonoBehaviour
 
     private void GetMoneyIfAvaliable()
     {
-        if (!_moneyCounter.activeInHierarchy && !GridBuildingSystem.Current.TempPlaceableObject)
+        if (CurrentMoneyInteger != 0 && !_moneyCounter.activeInHierarchy && !GridBuildingSystem.Current.TempPlaceableObject)
         {
             if (_selectable)
             {

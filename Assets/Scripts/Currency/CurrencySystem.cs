@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -22,16 +23,6 @@ public class CurrencySystem : MonoBehaviour
 
     private void Start()
     {
-        //if (PlayerPrefs.HasKey(_currencyName))
-        //{
-        //    _moneyCount = PlayerPrefs.GetInt(_currencyName);
-        //    DisplayCurrency();
-        //}
-        //else
-        //{
-        //    _moneyCount = 1000;
-        //}
-
         EventManager.Instance.AddListener<CurrencyChangeGameEvent>(OnCurrencyChange);
         EventManager.Instance.AddListener<NotEnoughCurrencyGameEvent>(OnNotEnoughCurrency);
     }
@@ -43,12 +34,19 @@ public class CurrencySystem : MonoBehaviour
         if (_currencyAmounts[info.CurrencyType] < 0)
             _currencyAmounts[info.CurrencyType] = 0;
 
-        _currencyTexts[info.CurrencyType].text = _currencyAmounts[info.CurrencyType].ToString();
+        SaveCurrency(info.CurrencyType, _currencyAmounts[info.CurrencyType]);
+
+        _currencyTexts[info.CurrencyType].text = _currencyAmounts[info.CurrencyType].ToString("#,#", new CultureInfo("en-US"));
     }
 
     private void OnNotEnoughCurrency(NotEnoughCurrencyGameEvent info)
     {
         Debug.Log($"You dont have enough amount of {info.Amount} {info.CurrencyType}");
+    }
+
+    private void SaveCurrency(CurrencyType currencyType, int amount)
+    {
+        PlayerPrefs.SetInt(currencyType.ToString(), amount);
     }
 }
 

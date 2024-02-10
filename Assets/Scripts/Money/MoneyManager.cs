@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class MoneyManager : MonoBehaviour
@@ -9,17 +6,15 @@ public class MoneyManager : MonoBehaviour
 
     private void Start()
     {
-        //if (PlayerPrefs.HasKey("Money"))
-        //{
-        //    _moneyCount = PlayerPrefs.GetInt("Money");
-        //    DisplayMoney();
-        //}
-        //else
-        //{
-        //    _moneyCount = 1000;
-        //}
+        if (PlayerPrefs.HasKey(CurrencyType.Coins.ToString()))
+        {
+            AddCoins(PlayerPrefs.GetInt(CurrencyType.Coins.ToString()));
+        }
+        else
+        {
+            AddCoins(_defaulMoneyAmount);
+        }
 
-        AddCoins(_defaulMoneyAmount);
     }
 
     public void AddCoins(int amount)

@@ -8,6 +8,7 @@ public class PlaceableObject : MonoBehaviour
 
     public BoundsInt Area;
     public int GridBuildingID;
+    public bool PlacedFromBeginning = false;
 
     [ReadOnly()] public PlaceableObjectData data = new PlaceableObjectData();
 
@@ -32,7 +33,7 @@ public class PlaceableObject : MonoBehaviour
     private Selectable _selectable;
     private Button _editButton;
     private Vector3 _origin;
-    private bool _placedFromBeginning = false;
+    private bool _isEditing = false;
 
     #region Unity Methods
 
@@ -43,31 +44,32 @@ public class PlaceableObject : MonoBehaviour
 
     private void Start()
     {
-        if (Placed)
+        //if (Placed && !PlacedFromBeginning)
+        //{
+        //    if (CanBePlaced())
+        //    {
+        //        Place();
+        //    }
+        //}
+
+        if (PlacedFromBeginning && !PlayerPrefs.HasKey("IsDefaultObjectInitialized"))
         {
+            PlaceableObjectItem defaultPlaceableObjectItem = Resources.Load<PlaceableObjectItem>("Placeables/TriceratopsItem");
+
+            Initialize(defaultPlaceableObjectItem);
+
             if (CanBePlaced())
             {
-                _placedFromBeginning = true;
                 Place();
             }
+
+            PlayerPrefs.SetInt("IsDefaultObjectInitialized", 1);
         }
 
         _editButton = FindObjectOfType<EditButton>(true).GetComponent<Button>();
         _editButton.onClick.AddListener(StartEditing);
 
         _selectable = _main.GetComponent<Selectable>();
-    }
-
-    private void OnApplicationQuit()
-    {
-        //if (!_placedFromBeginning)
-        //{
-        //    if (Placed)
-        //    {
-        //        data.Position = transform.position;
-        //        SaveManager.Current.saveData.AddData(data);
-        //    }
-        //}
     }
 
     #endregion
@@ -107,12 +109,28 @@ public class PlaceableObject : MonoBehaviour
 
         _origin = transform.position;
 
-        if (!_placedFromBeginning)
-        {
-            data.Position = transform.position;
-            SaveManager.Current.saveData.AddData(data);
-            SaveManager.Current.SaveGame();
-        }
+        data.Position = transform.position;
+        SaveManager.Current.SaveData.AddData(data);
+        SaveManager.Current.SaveGame();
+
+        CameraObjectFollowing.Current.SetTarget(null);
+    }
+
+    public void PlaceWithoutSave()
+    {
+        InitializeDisplayObjects(false);
+
+        Vector3Int positionInt = GridBuildingSystem.Current.GridLayout.LocalToCell(transform.position);
+        BoundsInt areaTemp = Area;
+        areaTemp.position = positionInt;
+        Placed = true;
+
+        transform.position = GridBuildingSystem.Current.GridLayout.CellToLocalInterpolated(positionInt);
+
+        GridBuildingSystem.Current.TakeArea(areaTemp);
+        SelectablesManager.Current.CheckForSelectables();
+
+        _origin = transform.position;
 
         CameraObjectFollowing.Current.SetTarget(null);
     }
@@ -164,6 +182,8 @@ public class PlaceableObject : MonoBehaviour
 
             GridBuildingSystem.Current.FollowBuilding();
             GridBuildingSystem.Current.ReloadUI();
+
+            _isEditing = true;
         }
     }
 
@@ -171,6 +191,7 @@ public class PlaceableObject : MonoBehaviour
     {
         transform.position = _origin;
         Place();
+        _isEditing = false;
     }
 
     #endregion

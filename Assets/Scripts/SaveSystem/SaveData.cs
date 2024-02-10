@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using UnityEngine;
 
 [Serializable]
-public class SaveData 
+public class SaveData
 {
     public static int IdCount;
 
@@ -19,7 +17,7 @@ public class SaveData
 
     public void AddData(Data data)
     {
-        if(data is PlaceableObjectData placeableObjectData)
+        if (data is PlaceableObjectData placeableObjectData)
         {
             if (PlaceableObjectDatas.ContainsKey(placeableObjectData.ID))
             {
